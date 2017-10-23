@@ -5,14 +5,14 @@
 #include <errno.h>
 
 // variables
-bool FOUND = 0; // found 100% thru analyzer
-bool NOTFOUND = 0; // found 0% thru analyzer
+bool FOUND = 0; // found exact location
+bool NOTFOUND = 0; // found no location
 bool INVALCH = 0; // invalid char inside crawler
 
-int crawler = 0; // crawler. RAWWWWRRR!
-int passedWords = 0; // how many words gone through analyzer
+int crawler = 0; // crawler = getchar();
+int passedWords = 0; // how many words had gone through analyzer
 char exactLocation[101]; // location which exactly responds arg input
-char desired[101]; // one location
+char desired[101]; // one tested location in time
 char yourChars[101]; // arg input (ex.: BR) - U can use strlen(yourChars) without problem. It should also had '\0' in the end
 char possible[27]; // possibble letters to continue with
 
