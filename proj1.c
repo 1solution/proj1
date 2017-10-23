@@ -2,6 +2,7 @@
 #include <string.h>
 #include <ctype.h>
 #include <stdbool.h>
+#include <stderr.h>
 
 // variables
 bool FOUND = 0; // found 100% thru analyzer
@@ -125,12 +126,12 @@ int main(int argc, char *argv[]) {
     strcpy(yourChars, argv[1]);
 
   if(checkInput(yourChars) == 1) {
-    printf("Non alpha character(s) detected");
+    fprintf(stderr, "%s", "Non alpha character(s) detected");
     return 1;
   }
 
   if(strlen(yourChars) > 100) {
-    printf("Too long argument input (max 100)");
+    fprintf(stderr,"%s","Too long argument input (max 100)");
     return 1;
   }
 /*else if(strlen(yourChars) == 0) { // DELETED, COULD IDENTIFY IF ARRAY IS EMPTY
@@ -143,11 +144,11 @@ int main(int argc, char *argv[]) {
     crawling(argv); // call crawler
 
     if(INVALCH) {
-      printf("Non alpha character(s) detected");
+      frpintf(stderr, "%s", "Non alpha character(s) detected");
       return 1;
     }
     if(NOTFOUND) {
-      printf("Not found");
+      fprintf(stderr, "%s", "Not found");
       return 1;
     }
 
