@@ -2,7 +2,7 @@
 #include <string.h>
 #include <ctype.h>
 #include <stdbool.h>
-#include <stderr.h>
+#include <errno.h>
 
 // variables
 bool FOUND = 0; // found 100% thru analyzer
