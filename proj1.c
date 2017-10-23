@@ -144,7 +144,7 @@ int main(int argc, char *argv[]) {
     crawling(argv); // call crawler
 
     if(INVALCH) {
-      frpintf(stderr, "%s", "Non alpha character(s) detected");
+      fprintf(stderr, "%s", "Non alpha character(s) detected");
       return 1;
     }
     if(NOTFOUND) {
