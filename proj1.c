@@ -14,7 +14,7 @@ int passedWords = 0; // how many words gone through analyzer
 char exactLocation[101]; // location which exactly responds arg input
 char desired[101]; // one location
 char yourChars[101]; // arg input (ex.: BR) - U can use strlen(yourChars) without problem. It should also had '\0' in the end
-char possible[101]; // possibble letters to continue with
+char possible[27]; // possibble letters to continue with
 
 int checkInput(char str[]) {
   int i = 0;
@@ -134,10 +134,10 @@ int main(int argc, char *argv[]) {
     fprintf(stderr,"%s","Too long argument input (max 100)");
     return 1;
   }
-/*else if(strlen(yourChars) == 0) { // DELETED, COULD IDENTIFY IF ARRAY IS EMPTY
-    printf("Empty array detected");
+  else if(strlen(yourChars) == 0) { // IDENTIFY IF ARRAY IS EMPTY
+    fprintf(stderr,"%s","Empty array detected");
     return 1;
-  }*/
+  }
 
   else { // ACTUAL PROGRAM
 
