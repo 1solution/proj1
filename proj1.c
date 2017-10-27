@@ -1,23 +1,20 @@
+/* proj1.c 163714 Michal Plsek xplsek03 */
+
 #include <stdio.h>
 #include <string.h>
 #include <ctype.h>
 #include <stdbool.h>
 #include <errno.h>
 
-// variables
 bool FOUND = 0; // found exact location
 bool NOTFOUND = 0; // found no location
 bool INVALCH = 0; // invalid char inside crawler
-
-/*unsigned int runs = 0;
-const unsigned int MAX_RUNS = 50; // set how many lines to support from input.txt*/
-
 int crawler = 0; // crawler = getchar();
 int passedWords = 0; // how many words had gone through analyzer
 char exactLocation[101]; // location which exactly responds arg input
-char desired[101]; // one tested location in time
-char yourChars[101]; // arg input (ex.: BR) - U can use strlen(yourChars) without problem. It should also had '\0' in the end
-char possible[27]; // possibble letters to continue with
+char desired[101]; // currently tested location in PROCESSING
+char yourChars[101]; // arg input (ex.: BR)
+char possible[95]; // possibble letters to continue with, max 95 allowed ASCII chars
 
 	void yourCharsUp(char str[]) {
   for(int i = 0; str[i] != '\0'; i++)
@@ -56,10 +53,9 @@ void showArray(char array[], int length) {
 }
 
 int isValid(int ch) {
-
-if(ch >= 32 && ch <= 126)
-	return 1;
-else return 0;
+	if(ch >= 32 && ch <= 126)
+		return 1;
+	else return 0;
 }
 
 void crawling(char *argv[]) {
@@ -67,7 +63,7 @@ void crawling(char *argv[]) {
   unsigned int yourLength = strlen(argv[1]);
   crawler = toupper(getchar());
 
-  while(crawler != EOF /*&& runs < MAX_RUNS*/) {
+  while(crawler != EOF) {
 
     int i = 0;
 
@@ -97,7 +93,7 @@ void crawling(char *argv[]) {
 
         while(c < yourLength) {
 
-          if((desired[c]) == yourChars[c]) // char analyze drive toupper(desired[c])
+          if((desired[c]) == yourChars[c])
             c++;
           else break;
 
@@ -114,38 +110,34 @@ void crawling(char *argv[]) {
           }
         }
 
-        if(passedWords == 0 && FOUND == 0) // this a counter for location which passes analyze 100%
+        if(passedWords == 0 && FOUND == 0) // this a counter for location which passes PROCESSING by 100%
           NOTFOUND = 1;
         else
           NOTFOUND = 0;
       // PROCESSING LOCATION COMPLETED
-
-		/*runs++;*/
   }
 }
 
-
-
-
-
-
 int main(int argc, char *argv[]) {
 
-  argc = argc ;
+ // argc = argc ;
 
-  if(!argv[1])
+if(argc > 1) { // odsud prepsat
+  if(strlen(argv[1]) == 0) // gets an empty arg as "SPACE"
     argv[1] = " ";
-  else
-    strcpy(yourChars, argv[1]);
+
+strcpy(yourChars, argv[1]);
+
+}
+else
+yourChars[0] = ' ';
+yourChars[1] = '\0';
+ // po sem prepsat
 
 	yourCharsUp(yourChars);
 
   if(strlen(yourChars) > 100) {
     fprintf(stderr,"%s","Too long argument input (max 100)");
-    return 1;
-  }
-  else if(strlen(yourChars) == 0) { // IDENTIFY IF ARRAY IS EMPTY
-    fprintf(stderr,"%s","Empty array detected");
     return 1;
   }
 
