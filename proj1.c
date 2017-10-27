@@ -9,6 +9,9 @@ bool FOUND = 0; // found exact location
 bool NOTFOUND = 0; // found no location
 bool INVALCH = 0; // invalid char inside crawler
 
+unsigned int runs = 0;
+const unsigned int MAX_RUNS = 50; // set how many lines to support from input.txt
+
 int crawler = 0; // crawler = getchar();
 int passedWords = 0; // how many words had gone through analyzer
 char exactLocation[101]; // location which exactly responds arg input
@@ -66,11 +69,16 @@ void crawling(char *argv[]) {
   unsigned int yourLength = strlen(argv[1]);
   crawler = toupper(getchar());
 
-  while(crawler != EOF) {
+  while(crawler != EOF && runs < MAX_RUNS) {
 
     int i = 0;
 
     while((crawler != '\n') && (crawler != EOF)) {
+
+				if(i == 100) { // if line is longer than 100, then cut the rest out and continue
+					desired[i] = '\0';
+				break;
+				}
 
         if(!isalpha(crawler)) {
           INVALCH = 1;
@@ -113,6 +121,8 @@ void crawling(char *argv[]) {
         else
           NOTFOUND = 0;
       // PROCESSING LOCATION COMPLETED
+
+		runs++;
   }
 }
 
