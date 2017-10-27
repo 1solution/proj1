@@ -129,10 +129,12 @@ if(argc > 1) { // odsud prepsat
 strcpy(yourChars, argv[1]);
 
 }
-else
-yourChars[0] = ' ';
-yourChars[1] = '\0';
- // po sem prepsat
+else {
+char test[] = "X";
+strcpy(yourChars, test);
+printf("youyradad: %s", yourChars);
+}
+ // po sem prepsat. CHYBA: vyhni s epouzivani argv v crawleru() a pridej nakonec tohohle retezce prazdnej znak
 
 	yourCharsUp(yourChars);
 
