@@ -9,8 +9,8 @@ bool FOUND = 0; // found exact location
 bool NOTFOUND = 0; // found no location
 bool INVALCH = 0; // invalid char inside crawler
 
-unsigned int runs = 0;
-const unsigned int MAX_RUNS = 50; // set how many lines to support from input.txt
+/*unsigned int runs = 0;
+const unsigned int MAX_RUNS = 50; // set how many lines to support from input.txt*/
 
 int crawler = 0; // crawler = getchar();
 int passedWords = 0; // how many words had gone through analyzer
@@ -19,22 +19,13 @@ char desired[101]; // one tested location in time
 char yourChars[101]; // arg input (ex.: BR) - U can use strlen(yourChars) without problem. It should also had '\0' in the end
 char possible[27]; // possibble letters to continue with
 
-int checkInput(char str[]) {
-  int i = 0;
-  while(str[i] != '\0') {
-    if(!isalpha(str[i])) {
-      return 1;
-    }
+	void yourCharsUp(char str[]) {
+  for(int i = 0; str[i] != '\0'; i++)
     str[i] = toupper(str[i]);
-    i++;
-  }
-  return 0;
 }
 
 int alreadyIs(char array[], char inside) {
-
   int length = strlen(array);
-
   for(int i = 0; i < length; i++) {
     if(array[i] == inside)
       return 1;
@@ -64,12 +55,19 @@ void showArray(char array[], int length) {
     printf("%c", toupper(array[k]));
 }
 
+int isValid(int ch) {
+
+if(ch >= 32 && ch <= 126)
+	return 1;
+else return 0;
+}
+
 void crawling(char *argv[]) {
 
   unsigned int yourLength = strlen(argv[1]);
   crawler = toupper(getchar());
 
-  while(crawler != EOF && runs < MAX_RUNS) {
+  while(crawler != EOF /*&& runs < MAX_RUNS*/) {
 
     int i = 0;
 
@@ -80,7 +78,7 @@ void crawling(char *argv[]) {
 				break;
 				}
 
-        if(!isalpha(crawler)) {
+        if(!isValid(crawler)) {
           INVALCH = 1;
         }
 
@@ -122,9 +120,14 @@ void crawling(char *argv[]) {
           NOTFOUND = 0;
       // PROCESSING LOCATION COMPLETED
 
-		runs++;
+		/*runs++;*/
   }
 }
+
+
+
+
+
 
 int main(int argc, char *argv[]) {
 
@@ -135,10 +138,7 @@ int main(int argc, char *argv[]) {
   else
     strcpy(yourChars, argv[1]);
 
-  if(checkInput(yourChars) == 1) {
-    fprintf(stderr, "%s", "Non alpha character(s) detected");
-    return 1;
-  }
+	yourCharsUp(yourChars);
 
   if(strlen(yourChars) > 100) {
     fprintf(stderr,"%s","Too long argument input (max 100)");
@@ -154,7 +154,7 @@ int main(int argc, char *argv[]) {
     crawling(argv); // call crawler
 
     if(INVALCH) {
-      fprintf(stderr, "%s", "Non alpha character(s) detected");
+      fprintf(stderr, "%s", "Invalid character(s) detected");
       return 1;
     }
     if(NOTFOUND) {
