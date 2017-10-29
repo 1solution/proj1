@@ -7,7 +7,6 @@
 #include <errno.h>
 
 bool FOUND = 0; // found exact location
-bool NOTFOUND = 0; // found no location
 bool INVALCH = 0; // invalid char inside crawler
 int crawler = 0; // crawler = getchar();
 int passedWords = 0; // how many words had gone through analyzer
@@ -110,31 +109,21 @@ void crawling(char *argv[]) {
           }
         }
 
-        if(passedWords == 0 && FOUND == 0) // this a counter for location which passes PROCESSING by 100%
-          NOTFOUND = 1;
-        else
-          NOTFOUND = 0;
       // PROCESSING LOCATION COMPLETED
   }
 }
 
 int main(int argc, char *argv[]) {
 
- // argc = argc ;
+  argc = argc ;
 
-if(argc > 1) { // odsud prepsat
-  if(strlen(argv[1]) == 0) // gets an empty arg as "SPACE"
-    argv[1] = " ";
-
-strcpy(yourChars, argv[1]);
-
-}
-else {
-char test[] = "X";
-strcpy(yourChars, test);
-printf("youyradad: %s", yourChars);
-}
- // po sem prepsat. CHYBA: vyhni s epouzivani argv v crawleru() a pridej nakonec tohohle retezce prazdnej znak
+  if(argv[1] && strlen(argv[1]) != 0) { // argument exists
+    strcpy(yourChars, argv[1]);
+  }
+  else { // aint no argument or is only ""
+    fprintf(stderr,"%s", "No argument");
+    return 1;
+  }
 
 	yourCharsUp(yourChars);
 
@@ -143,25 +132,23 @@ printf("youyradad: %s", yourChars);
     return 1;
   }
 
-  else { // ACTUAL PROGRAM
-
     crawling(argv); // call crawler
 
     if(INVALCH) {
       fprintf(stderr, "%s", "Invalid character(s) detected");
       return 1;
     }
-    if(NOTFOUND) {
-      fprintf(stderr, "%s", "Not found");
-      return 1;
-    }
 
     if(FOUND) {
       printf("Found: %s", exactLocation);
     }
-    if(passedWords > 0)
+    else if(passedWords > 0)
       showArray(possible,passedWords);
 
+      else {
+        fprintf(stderr, "%s", "Not found");
+        return 1;
+      }
+
     return 0;
-  }
 }
