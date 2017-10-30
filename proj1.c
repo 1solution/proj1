@@ -1,4 +1,5 @@
 /* proj1.c 163714 Michal Plsek xplsek03 */
+/* komenty ke vsem fcim a prazdn arg jako prefix. bez globalnich promennych */
 
 #include <stdio.h>
 #include <string.h>
