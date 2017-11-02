@@ -1,5 +1,4 @@
-/* proj1.c 163714 Michal Plsek xplsek03 */
-/* komenty ke vsem fcim a prazdn arg jako prefix. bez globalnich promennych */
+/* proj1.c 163714 Michal Plsek xplsek03 popisy fci pokud jen jeden v souboru tak ho rovnou najit ,no arg jako pr arg, bez globalnich promennych*/
 
 #include <stdio.h>
 #include <string.h>
@@ -16,12 +15,21 @@ char desired[101]; // currently tested location in PROCESSING
 char yourChars[101]; // arg input (ex.: BR)
 char possible[95]; // possibble letters to continue with, max 95 allowed ASCII chars
 
-	void yourCharsUp(char str[]) {
+  int toNextLine() { // if 100 chars in input file is reached, this skips to next newline
+    int t = getchar();
+
+    while((t != '\n') && (t != EOF))
+    t = getchar();
+
+    return t;
+  }
+
+	void yourCharsUp(char str[]) { // uppercases your argument chars
   for(int i = 0; str[i] != '\0'; i++)
     str[i] = toupper(str[i]);
 }
 
-int alreadyIs(char array[], char inside) {
+int alreadyIs(char array[], char inside) { // checks if its already inside the field with possible characters
   int length = strlen(array);
   for(int i = 0; i < length; i++) {
     if(array[i] == inside)
@@ -30,13 +38,13 @@ int alreadyIs(char array[], char inside) {
     return 0;
 }
 
-void swap(char *x, char *y) {
+void swap(char *x, char *y) { // swaps possible characters in field
     char temp = *x;
     *x = *y;
     *y = temp;
 }
 
-void showArray(char array[], int length) {
+void showArray(char array[], int length) { // prints possible chars and FOUND:
   for(int i = 0; i < length-1; i++) {
     for(int j = 0; j < length-i-1; j++) {
       if(array[j] > array[j+1])
@@ -52,13 +60,13 @@ void showArray(char array[], int length) {
     printf("%c", toupper(array[k]));
 }
 
-int isValid(int ch) {
+int isValid(int ch) { // checks if char on input is valid
 	if(ch >= 32 && ch <= 126)
 		return 1;
 	else return 0;
 }
 
-void crawling(char *argv[]) {
+void crawling(char *argv[]) { // main crawling and testing function
 
   unsigned int yourLength = strlen(argv[1]);
   crawler = toupper(getchar());
@@ -71,6 +79,9 @@ void crawling(char *argv[]) {
 
 				if(i == 100) { // if line is longer than 100, then cut the rest out and continue
 					desired[i] = '\0';
+
+					crawler = toNextLine();
+
 				break;
 				}
 
@@ -89,6 +100,7 @@ void crawling(char *argv[]) {
         }
 
       //PROCESSING LOCATION
+
         unsigned int c = 0;
 
         while(c < yourLength) {
@@ -104,6 +116,7 @@ void crawling(char *argv[]) {
         }
 
         if((c != strlen(desired)) && (c == yourLength)) {
+
           if(alreadyIs(possible, desired[c]) == 0) {
             possible[passedWords] = desired[c];
             passedWords++;
@@ -114,16 +127,15 @@ void crawling(char *argv[]) {
   }
 }
 
-int main(int argc, char *argv[]) {
+int main(int argc, char *argv[]) { // main
 
   argc = argc ;
 
-  if(argv[1] && strlen(argv[1]) != 0) { // argument exists
+  if(argv[1]) { // argument exists
     strcpy(yourChars, argv[1]);
+    char **subs = argv;
   }
-  else { // aint no argument or is only ""
-    fprintf(stderr,"%s", "No argument");
-    return 1;
+  else { // aint no argument typed
   }
 
 	yourCharsUp(yourChars);
