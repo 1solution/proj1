@@ -1,4 +1,4 @@
-/* proj1.c 163714 Michal Plsek xplsek03 bugs:no arg jako pr arg, glob promenne */
+/* proj1.c 163714 Michal Plsek xplsek03 */
 
 #include <stdio.h>
 #include <string.h>
@@ -112,7 +112,6 @@ void crawling(char *arg[]) { // main crawling and testing function
         }
 
       //PROCESSING LOCATION
-
         unsigned int c = 0;
 
         while(c < yourLength) {
@@ -136,21 +135,22 @@ void crawling(char *arg[]) { // main crawling and testing function
           strcpy(autocomplete, desired);
           candidates++;
         }
-
       // PROCESSING LOCATION COMPLETED
 
-      emptyStr(desired); // fill with '\0'
+      emptyStr(desired); // fill desired[] with '\0' and go again
   }
 }
 
 int main(int argc, char *argv[]) { // main
 
   argc = argc ;
-  char **field = argv;
+  char **newArr = argv; // only substitute, because gotta resolve non-exist. argument
 
   if(argv[1]) { // argument exists
-    strcpy(yourChars, field[1]);
+    strcpy(yourChars, newArr[1]);
   }
+  else
+		newArr[1] = "";
 
 	yourCharsUp(yourChars);
 
@@ -159,7 +159,7 @@ int main(int argc, char *argv[]) { // main
     return 1;
   }
 
-    crawling(field); // call crawler
+    crawling(newArr); // call crawler
 
     if(INVALCH) {
       fprintf(stderr, "%s", "Invalid character(s) detected");
