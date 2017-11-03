@@ -1,4 +1,4 @@
-/* proj1.c 163714 Michal Plsek xplsek03 popisy fci pokud jen jeden v souboru tak ho rovnou najit ,no arg jako pr arg, bez globalnich promennych*/
+/* proj1.c 163714 Michal Plsek xplsek03 bugs:no arg jako pr arg, glob promenne */
 
 #include <stdio.h>
 #include <string.h>
@@ -14,6 +14,13 @@ char exactLocation[101]; // location which exactly responds arg input
 char desired[101]; // currently tested location in PROCESSING
 char yourChars[101]; // arg input (ex.: BR)
 char possible[95]; // possibble letters to continue with, max 95 allowed ASCII chars
+char autocomplete[101]; // autocomplete if is only one candidate word
+int candidates = 0; // candidate for autocomplete
+
+  void emptyStr(char str[]) { // empties values from desired[] after every analyze run
+    for(int i = 0; i < 101; i++)
+      str[i] = '\0';
+  }
 
   int toNextLine() { // if 100 chars in input file is reached, this skips to next newline
     int t = getchar();
@@ -52,12 +59,17 @@ void showArray(char array[], int length) { // prints possible chars and FOUND:
     }
   }
 
-  if(FOUND)
-    printf("\n"); // because of FOUND && ENABLE one one screen
+  if(candidates == 1)
+    printf("Found: %s", autocomplete);
 
-  printf("Enable: ");
-  for(int k = 0; k < length; k++)
-    printf("%c", toupper(array[k]));
+  if(FOUND)
+		printf("\n"); // because of FOUND && ENABLE one one screen
+
+  if(candidates != 1) {
+		printf("Enable: ");
+		for(int k = 0; k < length; k++)
+			printf("%c", toupper(array[k]));
+  }
 }
 
 int isValid(int ch) { // checks if char on input is valid
@@ -66,9 +78,9 @@ int isValid(int ch) { // checks if char on input is valid
 	else return 0;
 }
 
-void crawling(char *argv[]) { // main crawling and testing function
+void crawling(char *arg[]) { // main crawling and testing function
 
-  unsigned int yourLength = strlen(argv[1]);
+  unsigned int yourLength = strlen(arg[1]);
   crawler = toupper(getchar());
 
   while(crawler != EOF) {
@@ -121,21 +133,23 @@ void crawling(char *argv[]) { // main crawling and testing function
             possible[passedWords] = desired[c];
             passedWords++;
           }
+          strcpy(autocomplete, desired);
+          candidates++;
         }
 
       // PROCESSING LOCATION COMPLETED
+
+      emptyStr(desired); // fill with '\0'
   }
 }
 
 int main(int argc, char *argv[]) { // main
 
   argc = argc ;
+  char **field = argv;
 
   if(argv[1]) { // argument exists
-    strcpy(yourChars, argv[1]);
-    char **subs = argv;
-  }
-  else { // aint no argument typed
+    strcpy(yourChars, field[1]);
   }
 
 	yourCharsUp(yourChars);
@@ -145,23 +159,23 @@ int main(int argc, char *argv[]) { // main
     return 1;
   }
 
-    crawling(argv); // call crawler
+    crawling(field); // call crawler
 
     if(INVALCH) {
       fprintf(stderr, "%s", "Invalid character(s) detected");
       return 1;
     }
 
+    if(!FOUND && passedWords == 0) {
+      fprintf(stderr, "%s", "Not found");
+      return 1;
+    }
+
     if(FOUND) {
       printf("Found: %s", exactLocation);
     }
-    else if(passedWords > 0)
+    if(passedWords > 0)
       showArray(possible,passedWords);
-
-      else {
-        fprintf(stderr, "%s", "Not found");
-        return 1;
-      }
 
     return 0;
 }
