@@ -6,10 +6,7 @@
 #include <stdbool.h>
 #include <errno.h>
 
-char desired[101]; // currently tested location in PROCESSING
-char yourChars[101]; // arg input (ex.: BR)
-char possible[95]; // possibble letters to continue with, max 95 allowed ASCII chars
-char autocomplete[101]; // autocomplete if is only one candidate word
+    char yourChars[101]; // arg input (ex.: BR)
 
 	int isValid(int ch) { // checks if char on input is valid
 		if(ch >= 32 && ch <= 126){
@@ -38,6 +35,7 @@ char autocomplete[101]; // autocomplete if is only one candidate word
 			*INVALCH = 1;
     str[i] = toupper(str[i]);
   }
+
 }
 
 int alreadyIs(char array[], char inside) { // checks if its already inside the field with possible characters
@@ -55,7 +53,7 @@ void swap(char *x, char *y) { // swaps possible characters in field
     *y = temp;
 }
 
-void showArray(char array[], int *passedWords, bool *FOUND, int *candidates) { // prints possible chars and FOUND:
+void showArray(char array[], int *passedWords, bool *FOUND, int *candidates, char *autocomplete) { // prints possible chars and FOUND:
   for(int i = 0; i < (*passedWords)-1; i++) {
     for(int j = 0; j < (*passedWords)-i-1; j++) {
       if(array[j] > array[j+1])
@@ -76,9 +74,9 @@ void showArray(char array[], int *passedWords, bool *FOUND, int *candidates) { /
   }
 }
 
-void crawling(char *arg[], bool *FOUND, bool *INVALCH, int *candidates, int *passedWords, char exactLocation) { // main crawling and testing function
+void crawling(char *arg[], bool *FOUND, bool *INVALCH, int *candidates, int *passedWords, char *exactLocation, char *autocomplete, char *desired, char *possible) { // main crawling and testing function
 
-	int crawler = 0; // crawler = getchar();
+    int crawler = 0; // crawler = getchar();
   unsigned int yourLength = strlen(arg[1]);
   crawler = toupper(getchar());
 
@@ -146,20 +144,23 @@ void crawling(char *arg[], bool *FOUND, bool *INVALCH, int *candidates, int *pas
 
 int main(int argc, char *argv[]) { // main
 
+    char possible[95]; // possibble letters to continue with, max 95 allowed ASCII chars
+    char desired[101]; // currently tested location in PROCESSING
+    char autocomplete[101]; // autocomplete if is only one candidate word
 	char exactLocation[101]; // location which exactly responds arg input
-  argc = argc ;
+    argc = argc ;
 	int candidates = 0; // candidate for autocomplete
 	int passedWords = 0; // how many words had gone through analyzer
 	bool INVALCH = 0; // invalid char inside crawler
 	bool FOUND = 0; // found exact location
-  char **newArr = argv; // only substitute, because gotta resolve non-exist. argument
+    char **newArr = argv; // only substitute, because gotta resolve non-exist. argument
 
   if(argv[1]) { // argument exists
     strcpy(yourChars, newArr[1]);
   }
-  else
+  else {
 		newArr[1] = "";
-
+  }
 	checkInput(yourChars, &INVALCH);
 
   if(strlen(yourChars) > 100) {
@@ -167,7 +168,7 @@ int main(int argc, char *argv[]) { // main
     return 1;
   }
 
-    crawling(newArr, &FOUND, &INVALCH, &candidates, &passedWords, exactLocation); // call crawler
+    crawling(newArr, &FOUND, &INVALCH, &candidates, &passedWords, exactLocation, autocomplete, desired, possible); // call crawler
 
     if(INVALCH) {
       fprintf(stderr, "%s", "Invalid character(s) detected");
@@ -183,7 +184,7 @@ int main(int argc, char *argv[]) { // main
       printf("Found: %s", exactLocation);
     }
     if(passedWords > 0)
-      showArray(possible, &passedWords, &FOUND, &candidates);
+      showArray(possible, &passedWords, &FOUND, &candidates, autocomplete);
 
     return 0;
 }
