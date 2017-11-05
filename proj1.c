@@ -59,13 +59,13 @@ void showArray(char array[], int length) { // prints possible chars and FOUND:
     }
   }
 
-  if(candidates == 1)
+  if(candidates == 1 && !FOUND)
     printf("Found: %s", autocomplete);
 
-  if(FOUND)
+  if(FOUND && passedWords > 0)
 		printf("\n"); // because of FOUND && ENABLE one one screen
 
-  if(candidates != 1) {
+  if((passedWords > 0 && candidates > 1) || (FOUND && passedWords > 0)) {
 		printf("Enable: ");
 		for(int k = 0; k < length; k++)
 			printf("%c", toupper(array[k]));
@@ -132,8 +132,12 @@ void crawling(char *arg[]) { // main crawling and testing function
             possible[passedWords] = desired[c];
             passedWords++;
           }
-          strcpy(autocomplete, desired);
-          candidates++;
+
+					if((!FOUND) && (c == yourLength) && (c != strlen(desired))) {
+						strcpy(autocomplete, desired);
+						candidates++;
+					}
+
         }
       // PROCESSING LOCATION COMPLETED
 
