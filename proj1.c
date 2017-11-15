@@ -1,5 +1,5 @@
 /* proj1.c 163714 Michal Plsek xplsek03 */
-
+// BUG: fill arr yourChars with zeros first, then u can use it as local var
 #include <stdio.h>
 #include <string.h>
 #include <ctype.h>
