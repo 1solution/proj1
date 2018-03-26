@@ -1,3 +1,1 @@
-# proj1
-
-School project 1 / IZP 2017
+IZP projekt 1 VUT 1BIT 2017/2018
